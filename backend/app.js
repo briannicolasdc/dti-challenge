@@ -3,17 +3,17 @@ export default function getBestPetShop(inputData) {
 
      const [dateString, smallDogsCount, bigDogsCount] = inputData.split(' ');
 
-     const dayOfWeek = (date) => {
-          const [dd, mm, yyyy] = date.split('/');
-          date = new Date(yyyy, mm - 1, dd);
-          return date.getDay();
-     }
-
      const dayOfWeekNumber = dayOfWeek(dateString);
      const isWeekEnd = (dayOfWeekNumber == 0 || dayOfWeekNumber == 6); //sabado = 6, domingo = 0
-     const meuCaninoFeliz = (isWeekEnd) ? (smallDogsCount * 20 * 1.2) + (bigDogsCount * 40 * 1.2) : (smallDogsCount * 20) + (bigDogsCount * 40);
-     const vaiRex = (isWeekEnd) ? (smallDogsCount * 20) + (bigDogsCount * 55) : (smallDogsCount * 15) + (bigDogsCount * 50);
-     const chowChawgas = (smallDogsCount * 30) + (bigDogsCount * 45);
+
+     const bestPetshopAndPrice = comparePrices(isWeekEnd, smallDogsCount, bigDogsCount);
+     return bestPetshopAndPrice;
+}
+
+function comparePrices(isWeekEnd, smallDogsCount, bigDogsCount) {
+     const meuCaninoFeliz = getMeuCaninoFelizPrice(isWeekEnd, smallDogsCount, bigDogsCount);
+     const vaiRex = getVaiRexPrice(isWeekEnd, smallDogsCount, bigDogsCount);
+     const chowChawgas = getChowChowgasPrice(smallDogsCount, bigDogsCount);
 
      const petshops = {
           'Meu Canino Feliz': { price: meuCaninoFeliz, distance: 2000 },
@@ -32,7 +32,31 @@ export default function getBestPetShop(inputData) {
      }
 
      return [bestPetshop, bestPrice];
-
 }
 
-//console.log(getBestPetShop("05/08/2018 3 5")); -> [ 'Meu Canino Feliz', 312 ]
+function getMeuCaninoFelizPrice(isWeekEnd, smallDogsCount, bigDogsCount) {
+     if (isWeekEnd) {
+          return (smallDogsCount * 20 * 1.2) + (bigDogsCount * 40 * 1.2);
+     }
+     return (smallDogsCount * 20) + (bigDogsCount * 40);
+}
+
+function getVaiRexPrice(isWeekEnd, smallDogsCount, bigDogsCount) {
+     if (isWeekEnd) {
+          return (smallDogsCount * 20) + (bigDogsCount * 55);
+     }
+     return (smallDogsCount * 15) + (bigDogsCount * 50);
+}
+
+function getChowChowgasPrice(smallDogsCount, bigDogsCount) {
+     return (smallDogsCount * 30) + (bigDogsCount * 45);
+}
+
+function dayOfWeek(date) {
+     const [dd, mm, yyyy] = date.split('/');
+     date = new Date(yyyy, mm - 1, dd);
+     return date.getDay();
+}
+
+
+console.log(getBestPetShop("03/08/2018 3 5")); //-> [ 'Meu Canino Feliz', 312 ]

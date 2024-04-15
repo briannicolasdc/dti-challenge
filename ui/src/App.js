@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -25,10 +25,7 @@ function App() {
       console.error(error);
     }
   };
-  console.log(bestPetShop);
-
-  useEffect(() => {
-  }, [bestPetShop]);
+  
 
   const [petShop, price] = bestPetShop;
 
